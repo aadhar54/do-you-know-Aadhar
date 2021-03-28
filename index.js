@@ -67,3 +67,36 @@ if(score>=2){
 
 console.log(chalk.bold.red.bgGreen('Hurrrrayyy ! Quiz is finished and look at you shining in highscores\n'));
 
+highscores.push({name:userName,score:score});
+
+highscores.sort(function(a,b){
+    if(a.score<b.score){
+        return 1;
+    }else{
+        return -1;
+    }
+})
+
+fs.writeFile('highscore.json',JSON.stringify(highscores),err=>{
+    if(err){
+        throw err;
+    }
+})
+
+console.log(chalk.black.bgWhite.bold('HIGHSCORE   NAME'))
+console.log(chalk.blue('----------------------'));
+let colorFlag = true;
+for(let i=0;i<highscores.length;i++){
+    let hs = highscores[i];
+    let space = "           ";
+    if(hs.score>9){
+        space = "          ";
+    }
+    if(colorFlag){
+        console.log(chalk.red.bold(hs.score+space+hs.name));
+    }else{
+        console.log(chalk.green.bold(hs.score+space+hs.name));
+    }
+    colorFlag = !colorFlag;
+}
+console.log(chalk.blue('----------------------'));
